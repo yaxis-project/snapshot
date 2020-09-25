@@ -44,8 +44,8 @@
 <script>
 import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
-import homepage from '@/homepage.json';
-import domains from '@/domains.json';
+import homepage from '@/snapshot-spaces/spaces/homepage.json';
+import domains from '@/snapshot-spaces/spaces/domains.json';
 
 export default {
   data() {
