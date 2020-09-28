@@ -158,7 +158,7 @@ export default {
     this.addChoice(2);
   },
   methods: {
-    ...mapActions(['send']),
+    ...mapActions(['send','verifyBeforeSend']),
     addChoice(num) {
       for (let i = 1; i <= num; i++) {
         this.counter++;
@@ -177,18 +177,28 @@ export default {
       this.loading = true;
       this.form.choices = this.choices.map(choice => choice.text);
       try {
-        const { ipfsHash } = await this.send({
+        const isValid = await this.verifyBeforeSend({
           token: this.space.address,
-          type: 'proposal',
-          payload: this.form
+          decimals: this.space.decimals,
+          min: this.space.min,
+          symbol: this.space.symbol,
         });
-        this.$router.push({
-          name: 'proposal',
-          params: {
-            key: this.key,
-            id: ipfsHash
-          }
-        });
+        if (isValid) {
+          const {ipfsHash} = await this.send({
+            token: this.space.address,
+            type: 'proposal',
+            payload: this.form
+          });
+          this.$router.push({
+            name: 'proposal',
+            params: {
+              key: this.key,
+              id: ipfsHash
+            }
+          });
+        } else {
+          this.loading = false;
+        }
       } catch (e) {
         console.error(e);
         this.loading = false;

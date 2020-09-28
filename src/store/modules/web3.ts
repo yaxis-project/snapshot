@@ -199,6 +199,27 @@ const actions = {
       return Promise.reject();
     }
   },
+  balanceOfToken: async ({ commit }, contractAddress) => {
+    commit('SEND_BALANCE_OF_REQUEST');
+    try {
+
+      const contract = new Contract(
+        getAddress(contractAddress),
+        abi["TestToken"],
+        web3
+      );
+      console.log({contractAddress, account : state.account, method: contract,  abi})
+
+      const balance = await contract.balanceOf(state.account);
+
+      commit('SEND_BALANCE_OF_SUCCESS');
+      return balance;
+    } catch (e) {
+      console.error(e)
+      commit('SEND_BALANCE_OF_FAILURE', e);
+      return Promise.reject();
+    }
+  },
   signMessage: async ({ commit }, message) => {
     commit('SIGN_MESSAGE_REQUEST');
     try {

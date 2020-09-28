@@ -4,6 +4,7 @@ import ipfs from '@/helpers/ipfs';
 import rpcProvider from '@/helpers/rpc';
 import { formatProposal, formatProposals } from '@/helpers/utils';
 import { version } from '@/../package.json';
+import BigNumber from 'bignumber.js'
 
 const mutations = {
   SEND_REQUEST() {
@@ -54,6 +55,28 @@ const mutations = {
 };
 
 const actions = {
+  verifyBeforeSend: async ({ commit, dispatch, rootState }, { token, min, decimals, symbol }) => {
+    commit('VERIFY_BEFORE_SEND_REQUEST');
+    try {
+      const decimalTokenBalance = await dispatch('balanceOfToken', token);
+      const minDecimals = new BigNumber(min).times(new BigNumber(10).pow(decimals));
+      if (new BigNumber(decimalTokenBalance.toString()).comparedTo(minDecimals) < 0) {
+        dispatch('notify', ['red', `You must have at least ${min} ${symbol} to create proposal`]);
+        return false
+      }
+      commit('VERIFY_BEFORE_SEND_SUCCESS');
+      return true;
+    } catch (e) {
+      console.error("VERIFY_BEFORE_SEND_FAILURE",e);
+      commit('VERIFY_BEFORE_SEND_FAILURE', e);
+      const errorMessage =
+        e && e.error_description
+          ? `Oops, ${e.error_description}`
+          : 'Oops, something went wrong!';
+      dispatch('notify', ['red', errorMessage]);
+      return;
+    }
+  },
   send: async ({ commit, dispatch, rootState }, { token, type, payload }) => {
     commit('SEND_REQUEST');
     try {
