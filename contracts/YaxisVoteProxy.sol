@@ -56,7 +56,7 @@ contract YaxisVoteProxy {
 
     // YaxisChef contract
     MasterChef public constant chef = MasterChef(
-        0xbD17B1ce622d73bD438b9E658acA5996dc394b0d
+        0xC330E7e73717cd13fb6bA068Ee871584Cf8A194F
     );
 
     // Pool 6 is the ETH/YAX pool
