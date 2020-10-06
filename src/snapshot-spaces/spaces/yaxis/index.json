@@ -5,8 +5,8 @@
   "decimals": 9,
   "symbol": "YAX VP",
   "defaultView": "core",
-  "address": "0xe37323e60153851ae036fc6ebbb312e2f043fffe",
-  "token": "0xe37323e60153851ae036fc6ebbb312e2f043fffe",
+  "address": "0x162c07f7076b5287cf1d599972c480c51ae00743",
+  "token": "0x162c07f7076b5287cf1d599972c480c51ae00743",
   "core": [
     "0x5661bF295f48F499A70857E8A6450066a8D16400",
     "0x26d9E5f37f3232ec8747803990fFC42BC17aC9bd",
